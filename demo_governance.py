@@ -1,16 +1,13 @@
 from opencql.runtime import CQLRuntime
 
-# The Experiment: A Governance Query
 query = """
-SELECT compliance_report 
-FROM gpt_4_turbo 
-WITH SYSTEM (ROLE='Auditor')
-JOIN KNOWLEDGE (source='audit_logs', threshold=0.9)
-GROUP BY domain ('GDPR', 'HIPAA', 'SOC2')
-AGGREGATE WITH 'Executive_Summary'
+SELECT report 
+FROM llama3 
+JOIN KNOWLEDGE (source='company_docs', threshold=0.8)
+GROUP BY domain ('Legal', 'Financial')
+AGGREGATE WITH 'Summary'
 """
 
-if __name__ == "__main__":
-    runtime = CQLRuntime()
-    result = runtime.execute(query)
-    print(f"\n [Final Result]: {result}")
+runtime = CQLRuntime()
+result = runtime.execute(query)
+print("\nFinal Output:", result)
