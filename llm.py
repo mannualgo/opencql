@@ -1,5 +1,6 @@
 import requests
 import json
+import traceback
 
 class OpenSourceLLM:
     def __init__(self, model_name="llama3"):
@@ -14,15 +15,16 @@ class OpenSourceLLM:
         
         try:
             payload = {
-                "model": self.model_name,
+                "model": "llama3.2",
                 "prompt": full_prompt,
                 "stream": False
             }
             response = requests.post(self.api_url, json=payload, timeout=2)
+            print (f"lamma response {response}")
             if response.status_code == 200:
                 return response.json().get("response", "")
-        except:
-            pass
+        except Exception:  
+            traceback.print_exc()
         
         # Fallback Mock (if no local model running)
         return f"[Mock {self.model_name} Output]: I have analyzed the context provided."

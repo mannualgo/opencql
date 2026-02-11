@@ -1,7 +1,7 @@
 from lark import Lark
-from .compiler import CQLCompiler
-from .vectors import VectorStore
-from .llm import OpenSourceLLM
+from compiler import CQLCompiler
+from vectors import VectorStore
+from llm import OpenSourceLLM
 
 # Load Grammar
 import os
@@ -44,6 +44,7 @@ class CQLRuntime:
 
         # 3. Semantic MapReduce (Group By)
         final_response = ""
+        print ("plan['model']",plan['model'])
         llm = OpenSourceLLM(model_name=plan['model'])
 
         if 'group_by' in plan['steps']:

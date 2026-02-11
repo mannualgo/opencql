@@ -1,5 +1,4 @@
-// OpenCQL Grammar
-// Author: [Your Name]
+// OpenCQL Grammar (Fixed for Single Quotes)
 
 start: statement
 
@@ -33,12 +32,15 @@ value_list: value ("," value)*
 tuple_list: tuple_item ("," tuple_item)*
 tuple_item: "(" value "," value ")"
 
-value: ESCAPED_STRING 
+// --- FIXED: Value supports both quote types ---
+value: STRING 
      | SIGNED_NUMBER 
      | "@" CNAME -> variable
 
+// Regex for Double or Single quoted strings
+STRING: /"[^"]*"/ | /'[^']*'/
+
 %import common.CNAME
-%import common.ESCAPED_STRING
 %import common.SIGNED_NUMBER
 %import common.WS
 %ignore WS
