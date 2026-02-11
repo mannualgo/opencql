@@ -1,0 +1,44 @@
+// OpenCQL Grammar
+// Author: [Your Name]
+
+start: statement
+
+statement: "SELECT" column "FROM" model clauses? -> query
+
+column: CNAME
+model: CNAME
+
+clauses: clause+
+
+clause: with_system
+      | join_knowledge
+      | inject_history
+      | group_by
+      | aggregate_with
+      | where_clause
+
+// --- Clauses ---
+with_system: "WITH SYSTEM" "(" kv_list ")"
+join_knowledge: "JOIN KNOWLEDGE" "(" kv_list ")"
+inject_history: "INJECT HISTORY" "(" tuple_list ")"
+group_by: "GROUP BY" CNAME "(" value_list ")"
+aggregate_with: "AGGREGATE WITH" value
+where_clause: "WHERE" kv_list
+
+// --- Primitives ---
+kv_list: kv_pair ("," kv_pair)*
+kv_pair: CNAME "=" value
+
+value_list: value ("," value)*
+tuple_list: tuple_item ("," tuple_item)*
+tuple_item: "(" value "," value ")"
+
+value: ESCAPED_STRING 
+     | SIGNED_NUMBER 
+     | "@" CNAME -> variable
+
+%import common.CNAME
+%import common.ESCAPED_STRING
+%import common.SIGNED_NUMBER
+%import common.WS
+%ignore WS
