@@ -31,28 +31,28 @@ class CQLRuntime:
         self.compiler = CQLCompiler()
 
     def execute(self, query_code):
-        print(f"\n🔬 [OpenCQL Experiment] Parsing Query...")
+        print(f"\n [OpenCQL Experiment] Parsing Query...")
         tree = self.parser.parse(query_code)
         plan = self.compiler.transform(tree)
         
-        print(f"📊 [Plan] AST Generated: {plan}")
+        print(f" [Plan] AST Generated: {plan}")
         
         # Simulate Execution
-        print(f"\n--- 🚀 Starting Execution Engine ---")
+        print(f"\n---  Starting Execution Engine ---")
         
         if 'group_by' in plan['steps']:
             gb = plan['steps']['group_by']
-            print(f"   🔄 [GROUP BY] Partitioning Logic: '{gb['column']}'")
+            print(f"[GROUP BY] Partitioning Logic: '{gb['column']}'")
             
             results = []
             for partition in gb['partitions']:
                 print(f"      > [MAP PHASE] Spawning Agent for partition: '{partition}'...")
                 time.sleep(0.5) # Simulate latency
-                # In a real system, this would call GPT-4 with filtered context
+               
                 results.append(f"[{partition} Analysis: VERIFIED]")
             
             agg = plan['steps'].get('aggregate', 'Concatenate')
-            print(f"   ⬇️  [REDUCE PHASE] Synthesizing via '{agg}'")
+            print(f" [REDUCE PHASE] Synthesizing via '{agg}'")
             final_output = " | ".join(results)
         else:
             final_output = "Standard Execution"
