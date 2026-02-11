@@ -1,6 +1,9 @@
 from lark import Transformer
 
 class CQLCompiler(Transformer):
+    """
+    Transforms the Lark Parse Tree into a structured Query Plan (AST).
+    """
     def query(self, args):
         plan = {
             "type": "SELECT",
@@ -25,6 +28,9 @@ class CQLCompiler(Transformer):
     def aggregate_with(self, args):
         return ("aggregate", args[0])
 
+    def inject_history(self, args):
+        return ("history", args[0])
+
     def kv_list(self, args):
         return args
 
@@ -39,3 +45,6 @@ class CQLCompiler(Transformer):
         if hasattr(val, 'type') and val.type == 'ESCAPED_STRING':
             return val[1:-1]
         return val
+
+    def variable(self, args):
+        return {"_param": str(args[0])}
